@@ -1,0 +1,11 @@
+# Ignore CCS buid folders IDE settings and binaries
+Debug/
+.ccsproject
+.cproject
+.launches/
+.project
+.settings/
+targetConfigs/
+*.out
+*.mao
+*.obj
