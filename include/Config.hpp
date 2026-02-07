@@ -6,8 +6,9 @@
  */
 
 #pragma once
-#include <msp430.h>
 #include "Driver.hpp"
+#include "Uart.hpp"
+#include <msp430.h>
 
 namespace AppConfig {
 
@@ -16,6 +17,7 @@ namespace AppConfig {
                                                                .inputChannel  = 4
     };
 
-    using MainScope = Hardware::Scope;
+    namespace  MainScope = Hardware::Scope;
+    using Console = Hardware::Uart;
 
 }

@@ -2,20 +2,20 @@
  * Driver.cpp
  *
  *  Created on: Feb 5, 2026
- *      Author: User
+ *      Author: Olayemi
  */
 
-#include "Drivers.hpp"
+#include <msp430.h>
+#include "include/Driver.hpp"
 #include <cstdio>
 
 
 namespace Hardware{
  namespace Scope{
-     static char txBuffer[10]; // shared internal buffer to save RAM
 
      void init(const ScopeConfig& cfg){// ADC : reference voltage , sample and hold time
-         DC10CTL0 = SHT_2 + ADC10ON;
-         ADC10TL1 = cfg.inputChannel + SHS_0 + ADC10SSEL_3;
+         ADC10CTL0 = ADC10SHT_2 + ADC10ON + REFON;
+         ADC10CTL1 = cfg.inputChannel + SHS_0 + ADC10SSEL_3;
          ADC10AE0 |= (1 << cfg.inputChannel);
 
          //Timer setup
@@ -37,12 +37,9 @@ namespace Hardware{
 
          uint16_t val = ADC10MEM;
 
-         int len = snprintf(txBuff, sizeof(txBuffer), "%u\r\n", val);
+         Uart::printNumber(val);
+         Uart::print("\r\n");
 
-         for (int i = 0; i < len; i++){
-             while (!(IFG2 & UCA0TXIFG)); // wait for UART TX Buffer
-             UCA0TXBUF = txBuffer[i];
-         }
      }
  }
 }

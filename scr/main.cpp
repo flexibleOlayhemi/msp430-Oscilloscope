@@ -5,19 +5,21 @@
  *      Author: Olayemi
  */
 
-#include "Config.hpp"
+#include <msp430.h>
+#include "include/Config.hpp"
 using namespace AppConfig;
 
 void main(void){
     WDTCTL = WDTPW | WDTHOLD; // stop watchdog timer
 
     MainScope::init(OscilloscopeSettings);
+    Console::init(); // Init uart at 9600 baud rate
 
     __enable_interrupt();  // enable global interrupt
 
     while(1){
 
-        __no_operations(); // Place holder for the debugger
+        __no_operation(); // Place holder for the debugger
     }
 }
 
