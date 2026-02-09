@@ -8,12 +8,13 @@
 #pragma once
 #include <msp430.h>
 #include <stdint.h>
+#include "Uart.hpp"
 
 namespace Hardware {
     struct ScopeConfig{ //configure to pass by reference
         uint16_t sampleRateHz;
         uint8_t inputChannel;
-    }
+    };
 
     namespace Scope{
         void init(const ScopeConfig& cfg);
