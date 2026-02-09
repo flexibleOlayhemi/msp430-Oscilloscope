@@ -14,8 +14,8 @@ namespace Hardware{
  namespace Scope{
 
      void init(const ScopeConfig& cfg){// ADC : reference voltage , sample and hold time
-         ADC10CTL0 = ADC10SHT_2 + ADC10ON + REFON;
-         ADC10CTL1 = cfg.inputChannel + SHS_0 + ADC10SSEL_3;
+         ADC10CTL0 = ADC10SHT_2 + ADC10ON;
+         ADC10CTL1 = (cfg.inputChannel << 12) + SHS_0 + ADC10SSEL_3;
          ADC10AE0 |= (1 << cfg.inputChannel);
 
          //Timer setup

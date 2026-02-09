@@ -7,6 +7,7 @@
 
 #pragma once
 #include "Driver.hpp"
+#include "Timer"
 #include "Uart.hpp"
 #include <msp430.h>
 
@@ -19,5 +20,6 @@ namespace AppConfig {
 
     namespace  MainScope = Hardware::Scope;
     using Console = Hardware::Uart;
+    using Timer = Hardware::TimerA<Hardware::TimerClock::SMCLK>;
 
 }
