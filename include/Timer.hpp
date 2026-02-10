@@ -22,6 +22,14 @@ namespace Hardware{
             CCTL0 = CCIE;
 
         }
+
+        static void setupPWM(volatile uint16_t& CTL , volatile uint16_t& CCR0, volatile uint16_t& CCR1, volatile uint16_t& CCTL1, uint16_t period){
+            CTL = getSourceBits() | MC_1 | TACLR; // up mode
+            CCR0 = period;
+            CCTL1 = OUTMOD_7; //Reset / Set Mode
+            CCR1 = 0; // start with 0% duty cycle
+
+        }
     private:
         //This logic stripped away by the compiler
         static constexpr uint16_t getSourceBits(){
