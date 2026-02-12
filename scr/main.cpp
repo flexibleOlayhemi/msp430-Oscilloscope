@@ -17,7 +17,7 @@ void main(void){
     //initialize timer 1 for melody at 1ms : Period 1000 = 1ms at 1Mhz SMCLK
     Timer::init(TA1CTL,TA1CCR0,TA1CCTL0,1000);
     SignalGenerator::init();
-    SignalGenerator::setDutyCycle(500); // 1.65V test
+    //SignalGenerator::setDutyCycle(500); // 1.65V test
 
     MainScope::init(OscilloscopeSettings);
     __enable_interrupt();  // enable global interrupt
@@ -37,14 +37,14 @@ __interrupt void Timer_A1_Sampling_ISR(void){
     //creating ~31Hz Sine Wave at 1ms per step and 32 steps
     SignalGenerator::updateWaveform(0);
 
-    static uint16_t tickCounter = 0;
+    //static uint16_t tickCounter = 0;
 
     //for 100Hz since the timer is initialized at 1ms
-    if (++tickCounter >= 10){
-        MainScope::captureAndStream();
-        tickCounter = 0;
+   // if (++tickCounter >= 10){
+        MainScope::captureAndStream();  // 1000Hz when tickCounter is commented
+       // tickCounter = 0;
 
-    }
+   //}
 }
 
 
