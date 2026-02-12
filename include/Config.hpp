@@ -21,5 +21,6 @@ namespace AppConfig {
     namespace  MainScope = Hardware::Scope;
     using Console = Hardware::Uart;
     using Timer = Hardware::TimerA<Hardware::TimerClock::SMCLK>;
+    namespace SignalGenerator = Hardware::SignalGen;
 
 }
