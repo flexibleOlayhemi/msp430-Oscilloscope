@@ -25,7 +25,7 @@ namespace Hardware {
         void init ();
         void setVoltage(uint16_t miliVolts);
         void setDutyCycle(uint16_t duty);
-        void updateWaveform(uint8_t type);
+        void updateWaveform(uint8_t type,uint8_t index, uint8_t gain);
 
     }
 }
