@@ -6,10 +6,12 @@
  */
 
 #pragma once
+#include <msp430.h>
 #include "Driver.hpp"
 #include "Timer"
 #include "Uart.hpp"
-#include <msp430.h>
+#include "Controls.hpp"
+
 
 namespace AppConfig {
 
@@ -22,5 +24,7 @@ namespace AppConfig {
     using Console = Hardware::Uart;
     using Timer = Hardware::TimerA<Hardware::TimerClock::SMCLK>;
     namespace SignalGenerator = Hardware::SignalGen;
+    using Controls = Hardware::Controls;
+
 
 }

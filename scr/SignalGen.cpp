@@ -42,44 +42,50 @@ namespace Hardware{
             TA0CCR1 = duty;
         }
 
-        void updateWaveform(uint8_t type){
+        void updateWaveform(uint8_t type, uint8_t gain){
+            uint32_t sample = 0;
+
             switch(type){
             case 0: //SINE WAVE
-                TA0CCR1 = sineTable[currentIndex];
-                currentIndex = (currentIndex + 1) % 32;
+                sample = sineTable[currentIndex];
+                //currentIndex = (currentIndex + 1) % 32;
                 break;
             case 1: //SQUARE WAVE
-                TA0CCR1 = (currentIndex < 16) ? 1000 : 0; //halve 100% half 0 duty cycle
-                currentIndex = (currentIndex + 1) % 32;
+                sample = (currentIndex < 16) ? 1000 : 0; //halve 100% half 0 duty cycle
+                //currentIndex = (currentIndex + 1) % 32;
                 break;
             case 2: // SAWTOOTH WAVE
-                TA0CCR1 = currentIndex * 31; // 31 * 32 steps avoiding floating point
-                currentIndex = (currentIndex + 1) % 32;
+                sample = currentIndex * 31; // 31 * 32 steps avoiding floating point
+                //currentIndex = (currentIndex + 1) % 32;
                 break;
             case 3: // TRIANGULAR WAVE
-                TA0CCR1 = (currentIndex < 16) ? (currentIndex * 62) : ((31 - currentIndex) *62);
-                currentIndex = (currentIndex + 1) % 32;
+                sample = (currentIndex < 16) ? (currentIndex * 62) : ((31 - currentIndex) *62);
+                //currentIndex = (currentIndex + 1) % 32;
                 break;
             case 4: // TRAPEZOID
                 if (currentIndex < 8) {
                     // Rise: 0 to 7 * 125 = 875 (roughly 1000)
-                    TA0CCR1 = currentIndex * 125;
+                    sample = currentIndex * 125;
                 }
                 else if (currentIndex < 16) {
                     // Hold High
-                    TA0CCR1 = 1000;
+                    sample = 1000;
                 }
                 else if (currentIndex < 24) {
                     // Fall: (23 - 16) * 125... we subtract from 1000
-                    TA0CCR1 = 1000 - ((currentIndex - 16) * 125);
+                    sample = 1000 - ((currentIndex - 16) * 125);
                 }
                 else {
                     // Hold Low
-                    TA0CCR1 = 0;
+                    sample = 0;
                 }
-                currentIndex = (currentIndex + 1) % 32;
+                //currentIndex = (currentIndex + 1) % 32;
                 break;
             }
+
+            TA0CCR1 = (uint16_t)(((uint32_t)sample * gain) / 100);
+
+            currentIndex = (currentIndex + 1) % 32;
 
         }
     }
