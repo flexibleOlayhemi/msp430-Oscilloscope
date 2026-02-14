@@ -19,7 +19,7 @@ namespace Hardware{
        0, 9, 38, 84, 146, 222, 308, 402
     };
 
-    static uint8_t currentIndex = 0;
+    //static uint8_t currentIndex = 0;
 
         void init(){
             P1DIR |= BIT6;
@@ -42,50 +42,51 @@ namespace Hardware{
             TA0CCR1 = duty;
         }
 
-        void updateWaveform(uint8_t type, uint8_t gain){
+        void updateWaveform(uint8_t type,uint8_t index, uint8_t gain){
             uint32_t sample = 0;
 
             switch(type){
             case 0: //SINE WAVE
-                sample = sineTable[currentIndex];
-                //currentIndex = (currentIndex + 1) % 32;
+                //sample = sineTable[index];
+                sample = sineTable[index];
+                //index = (index + 1) % 32;
                 break;
             case 1: //SQUARE WAVE
-                sample = (currentIndex < 16) ? 1000 : 0; //halve 100% half 0 duty cycle
-                //currentIndex = (currentIndex + 1) % 32;
+                sample = (index < 16) ? 1000 : 0; //halve 100% half 0 duty cycle
+                //index = (index + 1) % 32;
                 break;
             case 2: // SAWTOOTH WAVE
-                sample = currentIndex * 31; // 31 * 32 steps avoiding floating point
-                //currentIndex = (currentIndex + 1) % 32;
+                sample = index * 31; // 31 * 32 steps avoiding floating point
+                //index = (index + 1) % 32;
                 break;
             case 3: // TRIANGULAR WAVE
-                sample = (currentIndex < 16) ? (currentIndex * 62) : ((31 - currentIndex) *62);
-                //currentIndex = (currentIndex + 1) % 32;
+                sample = (index < 16) ? (index * 62) : ((31 - index) *62);
+                //index = (index + 1) % 32;
                 break;
             case 4: // TRAPEZOID
-                if (currentIndex < 8) {
+                if (index < 8) {
                     // Rise: 0 to 7 * 125 = 875 (roughly 1000)
-                    sample = currentIndex * 125;
+                    sample = index * 125;
                 }
-                else if (currentIndex < 16) {
+                else if (index < 16) {
                     // Hold High
                     sample = 1000;
                 }
-                else if (currentIndex < 24) {
+                else if (index < 24) {
                     // Fall: (23 - 16) * 125... we subtract from 1000
-                    sample = 1000 - ((currentIndex - 16) * 125);
+                    sample = 1000 - ((index - 16) * 125);
                 }
                 else {
                     // Hold Low
                     sample = 0;
                 }
-                //currentIndex = (currentIndex + 1) % 32;
+                //index = (index + 1) % 32;
                 break;
             }
 
             TA0CCR1 = (uint16_t)(((uint32_t)sample * gain) / 100);
 
-            currentIndex = (currentIndex + 1) % 32;
+            //index = (index + 1) % 32;
 
         }
     }
